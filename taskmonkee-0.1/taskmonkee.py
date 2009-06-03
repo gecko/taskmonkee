@@ -42,7 +42,7 @@ from SimpleGladeApp import bindtextdomain
 
 
 
-app_name = "taskMonkey"
+app_name = "taskMonkee"
 app_version = "0.1"
 glade_dir = ""
 locale_dir = ""
@@ -62,7 +62,7 @@ class Mainwindow(SimpleGladeApp):
         self.get_widget('MainWindow').set_icon_from_file("monkey.gif")
         # connect to the database
         userhomepath = os.environ['HOME'] + '/'
-        filename = userhomepath + '.taskMonkeyDB.sqlite'
+        filename = userhomepath + '.taskmonkeeDB.sqlite'
         if(len(glob(filename)) == 0):
             self.con = sqlite.connect(filename)
             self.con.execute('CREATE TABLE Tasks(completed BOOLEAN, title STRING, details STRING, duedate INTEGER, no_duedate_flag BOOLEAN)')
@@ -112,10 +112,6 @@ class Mainwindow(SimpleGladeApp):
             selection = widget.get_selection()
             selection.unselect_all()
         
-
-
-
-
 
 
     # Selects todays tasks from the database and refreshes the treeview
@@ -211,6 +207,8 @@ class Editwindow(SimpleGladeApp):
     def __init__(self, parent, mainwindow, id, path="gui.glade", root="EditWindow", domain=app_name, **kwargs):
         path = os.path.join(glade_dir, path)
         SimpleGladeApp.__init__(self, path, root, domain, **kwargs)
+        # set the application icon
+        self.get_widget('EditWindow').set_icon_from_file("monkey.gif")
         self.parent = parent
         self.mainwindow = mainwindow
         self.id = id
@@ -297,6 +295,8 @@ class Upcomingwindow(SimpleGladeApp):
     def __init__(self, parent, path="gui.glade", root="UpcomingWindow", domain=app_name, **kwargs):
         path = os.path.join(glade_dir, path)
         SimpleGladeApp.__init__(self, path, root, domain, **kwargs)
+        # set the application icon
+        self.get_widget('UpcomingWindow').set_icon_from_file("monkey.gif")
         self.parent = parent
         
         # set up the treeview in GUI
