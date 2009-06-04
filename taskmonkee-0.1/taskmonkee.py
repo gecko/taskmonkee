@@ -144,7 +144,9 @@ class Mainwindow(SimpleGladeApp):
 
     # add a task to the database and refresh the treeview
     def add_task(self, completed, title, details, duedate, no_duedate_flag):
-        self.con.execute("INSERT INTO Tasks(completed, title, details,  duedate, no_duedate_flag) VALUES ('%s', '%s', '%s', '%d', '%s')" %(completed, title, details, duedate, no_duedate_flag) )
+        # the '?' stuff is in order to use python-sqlites magic quotes :)
+        query = "INSERT INTO Tasks(completed, title, details, duedate, no_duedate_flag) VALUES ('%s', ?, ?, ?, '%s')" %(completed, no_duedate_flag) 
+        self.con.execute(query, (title, details, duedate) )
         self.con.commit()
         self.get_tasks_and_display()
 
@@ -152,8 +154,9 @@ class Mainwindow(SimpleGladeApp):
 
     # edit a task in the database and refresh the treeview
     def edit_task(self, id, completed, title, details, duedate, no_duedate_flag):
-        update_string = "UPDATE Tasks SET completed = '%s', title = '%s', details = '%s',  duedate = %d, no_duedate_flag = '%s' WHERE rowid = %d" %(completed, title, details, duedate, no_duedate_flag, id)
-        self.con.execute(update_string)
+        # the '?' stuff is in order to use python-sqlites magic quotes :)
+        query = "UPDATE Tasks SET completed = '%s', title = ?, details = ?,  duedate = ?, no_duedate_flag = '%s' WHERE rowid = ?" %(completed, no_duedate_flag)
+        self.con.execute(query,(title, details, duedate, id))
         self.con.commit()
         self.get_tasks_and_display()
 
